@@ -20,6 +20,10 @@ k8s-tools:
 print-arch:
     arch=$(uname -m); echo "Architecture: $arch"
 
+deploy-infra:
+    age --decrypt --output .env .env.enc
+    terraform apply --auto-approve
+
 hetzner-k3s:
     @echo "decrypting ssh keypair..."
     age --decrypt --output ~/.ssh/hetzner_k3s hetzner.enc
