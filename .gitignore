@@ -1,4 +1,5 @@
 kubeconfig_*
+.envrc
 
 #################################################################
 # Default .gitignore content for all terraform-aws-modules below
