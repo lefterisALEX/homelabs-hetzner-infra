@@ -4,9 +4,6 @@
 hetzner_k3s_version := "2.0.9"
 set dotenv-load
 
-# deploy the NAT gateway and private network in Hetzner
-deploy-infra:
-    terraform apply --auto-approve
 
 # decrypt the .env file and the private key for the cluster nodes.
 decrypt:
@@ -14,6 +11,10 @@ decrypt:
     age --decrypt --output ~/.ssh/hetzner_k3s hetzner.enc
     cp hetzner.pub ~/.ssh/hetzner_k3s.pub
     chmod 400 ~/.ssh/hetzner_k3s
+
+# deploy the NAT gateway and private network in Hetzner
+deploy-infra:
+    terraform apply --auto-approve
 
 # installs all required tools to deploy the cluster
 k8s-tools:
