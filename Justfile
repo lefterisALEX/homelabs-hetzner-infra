@@ -12,22 +12,23 @@ k8s-tools:
 
     @echo "Installing Helm..."
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+ 
+    @echo "Installing age..."
+    apt install age
 
     @echo "Installation complete!"
     kubectl version --client
     helm version
 
-print-arch:
-    arch=$(uname -m); echo "Architecture: $arch"
+decrypt:
+    age --decrypt --output .env .env.enc
+    age --decrypt --output ~/.ssh/hetzner_k3s hetzner.enc
+    cp hetzner.pub ~/.ssh/hetzner_k3s.pub
 
 deploy-infra:
-    age --decrypt --output .env .env.enc
     terraform apply --auto-approve
 
 hetzner-k3s:
-    @echo "decrypting ssh keypair..."
-    age --decrypt --output ~/.ssh/hetzner_k3s hetzner.enc
-    
     @echo "Installing hetzner-k3s..."
     arch=$(uname -m);  \
     if [ $arch = "x86_64" ]; then \
@@ -50,3 +51,6 @@ hetzner-k3s:
 delete:
     hetzner-k3s delete --config cluster.yaml
 
+destroy:
+    age --decrypt --output .env .env.enc
+    terraform destroy --auto-approve
