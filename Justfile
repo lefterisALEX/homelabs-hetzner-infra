@@ -66,7 +66,9 @@ infra-apps:
            --wait
 
     kubectl annotate svc/argo-cd-argocd-server -n argocd tailscale.com/expose="true"
- 
+
+bootstrap-apps:
+    kubectl apply -f apps/bootstrap.yaml
 # Delete the cluster
 delete:
     hetzner-k3s delete --config cluster.yaml
