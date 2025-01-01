@@ -24,6 +24,7 @@ decrypt:
     age --decrypt --output .env .env.enc
     age --decrypt --output ~/.ssh/hetzner_k3s hetzner.enc
     cp hetzner.pub ~/.ssh/hetzner_k3s.pub
+    chmod 400 ~/.ssh/hetzner_k3s
 
 deploy-infra:
     terraform apply --auto-approve
