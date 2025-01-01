@@ -4,6 +4,18 @@
 hetzner_k3s_version := "2.0.9"
 set dotenv-load
 
+# deploy the NAT gateway and private network in Hetzner
+deploy-infra:
+    terraform apply --auto-approve
+
+# decrypt the .env file and the private key for the cluster nodes.
+decrypt:
+    age --decrypt --output .env .env.enc
+    age --decrypt --output ~/.ssh/hetzner_k3s hetzner.enc
+    cp hetzner.pub ~/.ssh/hetzner_k3s.pub
+    chmod 400 ~/.ssh/hetzner_k3s
+
+# installs all required tools to deploy the cluster
 k8s-tools:
     @echo "Installing kubectl..."
     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -20,15 +32,7 @@ k8s-tools:
     kubectl version --client
     helm version
 
-decrypt:
-    age --decrypt --output .env .env.enc
-    age --decrypt --output ~/.ssh/hetzner_k3s hetzner.enc
-    cp hetzner.pub ~/.ssh/hetzner_k3s.pub
-    chmod 400 ~/.ssh/hetzner_k3s
-
-deploy-infra:
-    terraform apply --auto-approve
-
+# deploy the k3s cluster
 hetzner-k3s:
     @echo "Installing hetzner-k3s..."
     arch=$(uname -m);  \
@@ -48,7 +52,7 @@ hetzner-k3s:
     @echo "Deploy k3s cluster"
     hetzner-k3s create --config cluster.yaml | tee create.log
 
-infra-apps:
+    @echo "installs argocd and tailscale"
     helm repo add tailscale https://pkgs.tailscale.com/helmcharts
     helm repo add argo https://argoproj.github.io/argo-helm
     helm repo update
@@ -67,12 +71,14 @@ infra-apps:
 
     kubectl annotate svc/argo-cd-argocd-server -n argocd tailscale.com/expose="true"
 
-bootstrap-apps:
+    @echo "bootstrap all apps"
     kubectl apply -f apps/bootstrap.yaml
+
 # Delete the cluster
 delete:
     hetzner-k3s delete --config cluster.yaml
 
+# destroy all infra
 destroy:
     age --decrypt --output .env .env.enc
     terraform destroy --auto-approve
