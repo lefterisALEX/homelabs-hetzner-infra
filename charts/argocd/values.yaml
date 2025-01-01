@@ -1,0 +1,4 @@
+## Custom resource configuration
+crds:
+  # -- Install and upgrade CRDs
+  install: true
