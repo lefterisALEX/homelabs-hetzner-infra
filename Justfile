@@ -48,6 +48,24 @@ hetzner-k3s:
     @echo "Deploy k3s cluster"
     hetzner-k3s create --config cluster.yaml | tee create.log
 
+infra-apps:
+    @Deploy infra apps...
+    helm repo add tailscale https://pkgs.tailscale.com/helmcharts
+    helm repo add argo https://argoproj.github.io/argo-helm
+    helm repo update
+
+    helm upgrade \
+           --install \
+           tailscale-operator \
+           tailscale/tailscale-operator \
+           --namespace=tailscale \
+           --create-namespace \
+           --set-string oauth.clientId="${{TS_CLIENT_ID}}" \
+           --set-string oauth.clientSecret="${{TS_CLIENT_SECRET}}" \
+           --wait
+
+
+
 # Delete the cluster
 delete:
     hetzner-k3s delete --config cluster.yaml
