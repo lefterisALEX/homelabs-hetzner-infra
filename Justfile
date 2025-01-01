@@ -53,7 +53,7 @@ infra-apps:
     helm repo add argo https://argoproj.github.io/argo-helm
     helm repo update
 
-    helm upgrade --install argo-cd --namespace argocd  argo/argo-cd -f charts/argocd/values.yaml
+    helm upgrade --install argo-cd --namespace argocd  --create-namespace argo/argo-cd -f charts/argocd/values.yaml
 
     helm upgrade \
            --install \
