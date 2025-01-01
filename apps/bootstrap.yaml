@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     path: apps
-    repoURL: git@github.com:lefterisALEX/homelabs-hetzner-infra.git
+    repoURL: https://github.com/lefterisALEX/homelabs-hetzner-infra.git
     targetRevision: HEAD
     directory:
       recurse: true
