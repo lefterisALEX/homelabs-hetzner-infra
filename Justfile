@@ -65,8 +65,8 @@ infra-apps:
            --set-string oauth.clientSecret="${TS_CLIENT_SECRET}" \
            --wait
 
-
-
+    kubectl annotate svc/argo-cd-argocd-server -n argocd tailscale.com/expose="true"
+ 
 # Delete the cluster
 delete:
     hetzner-k3s delete --config cluster.yaml
