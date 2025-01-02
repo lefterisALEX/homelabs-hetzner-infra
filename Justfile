@@ -56,10 +56,11 @@ hetzner-k3s:
     @echo "installs argocd and tailscale"
     helm repo add tailscale https://pkgs.tailscale.com/helmcharts
     helm repo add argo https://argoproj.github.io/argo-helm
+    helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
     helm repo update
 
     helm upgrade --install argo-cd --namespace argocd  --create-namespace argo/argo-cd -f charts/argocd/values.yaml
-
+    helm upgrade --install sealed-secrets --namespace kube-system sealed-secrets/sealed-secrets
     helm upgrade \
            --install \
            tailscale-operator \
