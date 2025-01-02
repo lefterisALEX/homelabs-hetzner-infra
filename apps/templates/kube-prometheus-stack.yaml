@@ -16,6 +16,8 @@ spec:
     targetRevision: 41.7.4
     helm:
       skipCrds: true
+      valueFiles:
+      - values-prometheus.yaml
     chart: kube-prometheus-stack
   destination:
     server: 'https://kubernetes.default.svc'

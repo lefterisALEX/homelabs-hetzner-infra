@@ -1,0 +1,3 @@
+alertmanager:
+  ingress:
+    enabled: true
