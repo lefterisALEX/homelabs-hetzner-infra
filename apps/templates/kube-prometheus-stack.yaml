@@ -12,13 +12,15 @@ metadata:
 spec:
   project: default 
   source:
-    repoURL: 'https://prometheus-community.github.io/helm-charts'
+  - repoURL: 'https://prometheus-community.github.io/helm-charts'
     targetRevision: 41.7.4
     helm:
       skipCrds: true
       valueFiles:
-      - values-prometheus.yaml
+      - ${values}/apps/templates/values-prometheus.yaml
     chart: kube-prometheus-stack
+  - repoURL: 'https://github.com/lefterisALEX/homelabs-hetzner-infra'
+    ref: values
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring
