@@ -17,7 +17,7 @@ spec:
     helm:
       skipCrds: true
       valueFiles:
-      - ${values}/apps/templates/values-prometheus.yaml
+      - $values/apps/templates/values-prometheus.yaml
     chart: kube-prometheus-stack
   - repoURL: 'https://github.com/lefterisALEX/homelabs-hetzner-infra'
     ref: values
