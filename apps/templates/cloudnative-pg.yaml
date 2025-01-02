@@ -1,11 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress-nginx
+  name: cloudnative-pg
   namespace: argocd
 spec:
   destination:
-    namespace: ingress-nginx
+    namespace: cnpg-system
     server: https://kubernetes.default.svc
   project: default 
   syncPolicy:
@@ -15,8 +15,8 @@ spec:
    syncOptions:
    - CreateNamespace=true
   source:
-    chart: ingress-nginx
-    repoURL: https://kubernetes.github.io/ingress-nginx
-    targetRevision: 4.4.0
+    chart: cloudnative-pg
+    repoURL: https://cloudnative-pg.github.io/charts
+    targetRevision: 0.22.0
     helm:
       version: v3
