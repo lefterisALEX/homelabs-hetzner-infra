@@ -29,6 +29,14 @@ k8s-tools:
     @echo "Installing age..."
     apt install age
 
+    @echo "Installing kubeseal."
+    KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | grep '"tag_name":' | cut -d'"' -f4)
+    wget https://github.com/bitnami-labs/sealed-secrets/releases/download/${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION#v}-linux-amd64.tar.gz
+    tar -xvzf kubeseal-${KUBESEAL_VERSION#v}-linux-amd64.tar.gz kubeseal
+    chmod +x kubeseal
+    sudo mv kubeseal /usr/local/bin/
+    rm kubeseal-${KUBESEAL_VERSION#v}-linux-amd64.tar.gz
+
     @echo "Installation complete!"
     kubectl version --client
     helm version
@@ -56,11 +64,11 @@ hetzner-k3s:
     @echo "installs argocd and tailscale"
     helm repo add tailscale https://pkgs.tailscale.com/helmcharts
     helm repo add argo https://argoproj.github.io/argo-helm
-    helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets
+    helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets 
     helm repo update
 
     helm upgrade --install argo-cd --namespace argocd  --create-namespace argo/argo-cd -f charts/argocd/values.yaml
-    helm upgrade --install sealed-secrets --namespace kube-system sealed-secrets/sealed-secrets
+    helm upgrade --install sealed-secrets --namespace kube-system sealed-secrets/sealed-secrets --set-string keyrenewperiod=1
     helm upgrade \
            --install \
            tailscale-operator \
@@ -82,5 +90,4 @@ delete:
 
 # destroy all infra
 destroy:
-    age --decrypt --output .env .env.enc
     terraform destroy --auto-approve
