@@ -66,7 +66,21 @@ create-cluster:
     helm repo update
 
     helm upgrade --install argo-cd --namespace argocd  --create-namespace argo/argo-cd -f charts/argocd/values.yaml
-
+# install tailscale
+tailscale:
+    helm repo add tailscale https://pkgs.tailscale.com/helmcharts
+    helm repo update
+    helm upgrade \
+           --install \
+           tailscale-operator \
+           tailscale/tailscale-operator \
+           --namespace=tailscale \
+           --create-namespace \
+           --set-string oauth.clientId="${TS_CLIENT_ID}" \
+           --set-string oauth.clientSecret="${TS_CLIENT_SECRET}" \
+           --wait
+# bootstrap apps
+bootstrap-apps:
     @echo "bootstrap all apps"
     kubectl apply -f apps/bootstrap.yaml
 
