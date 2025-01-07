@@ -42,7 +42,7 @@ k8s-tools:
     helm version
 
 # deploy the k3s cluster
-hetzner-k3s:
+create-cluster:
     @echo "Installing hetzner-k3s..."
     arch=$(uname -m);  \
     if [ $arch = "x86_64" ]; then \
@@ -62,32 +62,18 @@ hetzner-k3s:
     hetzner-k3s create --config cluster.yaml | tee create.log
 
     @echo "installs argocd and tailscale"
-    helm repo add tailscale https://pkgs.tailscale.com/helmcharts
     helm repo add argo https://argoproj.github.io/argo-helm
-    helm repo add sealed-secrets https://bitnami-labs.github.io/sealed-secrets 
     helm repo update
 
     helm upgrade --install argo-cd --namespace argocd  --create-namespace argo/argo-cd -f charts/argocd/values.yaml
-    helm upgrade --install sealed-secrets --namespace kube-system sealed-secrets/sealed-secrets --set-string keyrenewperiod=1
-    helm upgrade \
-           --install \
-           tailscale-operator \
-           tailscale/tailscale-operator \
-           --namespace=tailscale \
-           --create-namespace \
-           --set-string oauth.clientId="${TS_CLIENT_ID}" \
-           --set-string oauth.clientSecret="${TS_CLIENT_SECRET}" \
-           --wait
-
-    kubectl annotate svc/argo-cd-argocd-server -n argocd tailscale.com/expose="true"
 
     @echo "bootstrap all apps"
     kubectl apply -f apps/bootstrap.yaml
 
 # Delete the cluster
-delete:
+delete-cluster:
     hetzner-k3s delete --config cluster.yaml
 
 # destroy all infra
-destroy:
+destroy-infra:
     terraform destroy --auto-approve
