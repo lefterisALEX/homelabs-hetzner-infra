@@ -66,9 +66,7 @@ create-cluster:
     helm repo update
 
     helm upgrade --install argo-cd --namespace argocd  --create-namespace argo/argo-cd -f charts/argocd/values.yaml
-    kubectl create secret generic infisical-service-token -n kube-system --from-literal=infisicalToken=$INFISICAL_TOKEN
-    kubectl create secret generic universal-auth-credentials -n kube-system --from-literal=clientId=$INFISICAL_ID --from-literal=clientSecret=$INFISICAL_SECRET
-
+    kubectl create secret generic universal-auth-credentials -n kube-system --from-literal=clientId=$INFISICAL_ID --from-literal=clientSecret=$INFISICAL_SECRET -oyaml | kubectl apply -f -
 
 # install tailscale
 tailscale:
