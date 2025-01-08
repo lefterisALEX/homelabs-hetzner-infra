@@ -66,6 +66,8 @@ create-cluster:
     helm repo update
 
     helm upgrade --install argo-cd --namespace argocd  --create-namespace argo/argo-cd -f charts/argocd/values.yaml
+    kubectl create secret generic infisical-service-token -n kube-system --from-literal=infisicalToken=$INFISICAL_TOKEN
+
 # install tailscale
 tailscale:
     helm repo add tailscale https://pkgs.tailscale.com/helmcharts
