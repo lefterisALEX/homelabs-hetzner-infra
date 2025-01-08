@@ -1,0 +1,18 @@
+apiVersion: secrets.infisical.com/v1alpha1
+kind: InfisicalSecret
+metadata:
+  name: storage-box-hetzner
+spec:
+  hostAPI: https://app.infisical.com/api
+  authentication:
+    universalAuth:
+      secretsScope:
+        projectSlug: k3s
+        envSlug: prod
+        secretsPath: "/storagebox"
+      credentialsRef:
+        secretName: infisical-service-token
+        secretNamespace: kube-system 
+  managedSecretReference:
+    secretName: storage-box 
+    secretNamespace: kube-system
