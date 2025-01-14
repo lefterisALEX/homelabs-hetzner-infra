@@ -7,12 +7,28 @@ spec:
   authentication:
     universalAuth:
       secretsScope:
-        projectSlug: k3s
         envSlug: prod
+        projectSlug: k3s-0oo-y
         secretsPath: "/storagebox"
+        recursive: true
       credentialsRef:
-        secretName: infisical-service-token
-        secretNamespace: kube-system 
+        secretName: universal-auth-credentials
+        secretNamespace: kube-system
   managedSecretReference:
-    secretName: storage-box 
+    secretName: storage-box
     secretNamespace: kube-system
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: storagebox
+allowVolumeExpansion: true
+parameters:
+  csi.storage.k8s.io/node-stage-secret-name: storage-box
+  csi.storage.k8s.io/node-stage-secret-namespace: kube-system
+  csi.storage.k8s.io/provisioner-secret-name: storage-box
+  csi.storage.k8s.io/provisioner-secret-namespace: kube-system
+  source: //u399852-sub3.your-storagebox.de/u399852-sub3
+provisioner: smb.csi.k8s.io
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
