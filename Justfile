@@ -81,6 +81,7 @@ tailscale:
            --set-string oauth.clientId="${TS_CLIENT_ID}" \
            --set-string oauth.clientSecret="${TS_CLIENT_SECRET}" \
            --wait
+
 # bootstrap apps
 bootstrap-apps:
     @echo "bootstrap all apps"

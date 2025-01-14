@@ -15,7 +15,7 @@ spec:
         secretName: universal-auth-credentials
         secretNamespace: kube-system
   managedSecretReference:
-    secretName: storage-box
+    secretName: storagebox
     secretNamespace: kube-system
 ---
 apiVersion: storage.k8s.io/v1
@@ -24,9 +24,9 @@ metadata:
   name: storagebox
 allowVolumeExpansion: true
 parameters:
-  csi.storage.k8s.io/node-stage-secret-name: storage-box
+  csi.storage.k8s.io/node-stage-secret-name: storagebox
   csi.storage.k8s.io/node-stage-secret-namespace: kube-system
-  csi.storage.k8s.io/provisioner-secret-name: storage-box
+  csi.storage.k8s.io/provisioner-secret-name: storagebox
   csi.storage.k8s.io/provisioner-secret-namespace: kube-system
   source: //u399852-sub3.your-storagebox.de/u399852-sub3
 provisioner: smb.csi.k8s.io
