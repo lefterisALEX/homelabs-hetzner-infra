@@ -29,6 +29,11 @@ k8s-tools:
     @echo "Installing age..."
     apt install age
 
+    @echo "Installing argo cli..."
+    curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+    sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+    rm argocd-linux-amd64
+
     @echo "Installing kubeseal."
     KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | grep '"tag_name":' | cut -d'"' -f4)
     wget https://github.com/bitnami-labs/sealed-secrets/releases/download/${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION#v}-linux-amd64.tar.gz
@@ -40,6 +45,8 @@ k8s-tools:
     @echo "Installation complete!"
     kubectl version --client
     helm version
+
+
 
 # deploy the k3s cluster
 create-cluster:
