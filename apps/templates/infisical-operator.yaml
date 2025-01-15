@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: infisical-operator
   namespace: argocd
+  annotations:
+  argocd.argoproj.io/sync-wave: "0"  # Sync first
 spec:
   destination:
     namespace: kube-system
