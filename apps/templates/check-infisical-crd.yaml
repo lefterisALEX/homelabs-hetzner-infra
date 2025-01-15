@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: wait-for-infisical-crd
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    argocd.argoproj.io/sync-wave: "1"  # Next, check CRD readiness
+spec:
+  template:
+    spec:
+      containers:
+      - name: check-crd
+        image: bitnami/kubectl:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          until kubectl get crd infisicalsecrets.secrets.infisical.com; do
+            echo "Waiting for Infisical CRD to be available..."
+            sleep 5
+          done
+          echo "Infisical CRD is ready."
+        restartPolicy: Never
+      restartPolicy: OnFailure
+
