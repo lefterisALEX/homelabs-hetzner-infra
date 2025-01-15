@@ -60,26 +60,14 @@ create-cluster:
     @echo "Deploy k3s cluster"
     hetzner-k3s create --config cluster.yaml | tee create.log
 
-    @echo "installs argocd and tailscale"
+    @echo "installs argocd"
     helm repo add argo https://argoproj.github.io/argo-helm
     helm repo update
-
     helm upgrade --install argo-cd --namespace argocd  --create-namespace argo/argo-cd -f charts/argocd/values.yaml
+
+    @echo "creates infisical token"
     kubectl create secret generic universal-auth-credentials -n kube-system --from-literal=clientId=$INFISICAL_ID --from-literal=clientSecret=$INFISICAL_SECRET -oyaml | kubectl apply -f -
 
-# install tailscale
-tailscale:
-    helm repo add tailscale https://pkgs.tailscale.com/helmcharts
-    helm repo update
-    helm upgrade \
-           --install \
-           tailscale-operator \
-           tailscale/tailscale-operator \
-           --namespace=tailscale \
-           --create-namespace \
-           --set-string oauth.clientId="${TS_CLIENT_ID}" \
-           --set-string oauth.clientSecret="${TS_CLIENT_SECRET}" \
-           --wait
 
 # bootstrap apps
 bootstrap-apps:
