@@ -34,14 +34,6 @@ k8s-tools:
     sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
     rm argocd-linux-amd64
 
-    @echo "Installing kubeseal."
-    KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | grep '"tag_name":' | cut -d'"' -f4)
-    wget https://github.com/bitnami-labs/sealed-secrets/releases/download/${KUBESEAL_VERSION}/kubeseal-${KUBESEAL_VERSION#v}-linux-amd64.tar.gz
-    tar -xvzf kubeseal-${KUBESEAL_VERSION#v}-linux-amd64.tar.gz kubeseal
-    chmod +x kubeseal
-    sudo mv kubeseal /usr/local/bin/
-    rm kubeseal-${KUBESEAL_VERSION#v}-linux-amd64.tar.gz
-
     @echo "Installation complete!"
     kubectl version --client
     helm version
