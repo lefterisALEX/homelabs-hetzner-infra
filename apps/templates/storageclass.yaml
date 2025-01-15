@@ -1,0 +1,15 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: storagebox
+allowVolumeExpansion: true
+parameters:
+  csi.storage.k8s.io/node-stage-secret-name: storagebox
+  csi.storage.k8s.io/node-stage-secret-namespace: kube-system
+  csi.storage.k8s.io/provisioner-secret-name: storagebox
+  csi.storage.k8s.io/provisioner-secret-namespace: kube-system
+  source: //u399852-sub3.your-storagebox.de/u399852-sub3
+provisioner: smb.csi.k8s.io
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
