@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: apps
+    path: apps/infisical
     repoURL: https://github.com/lefterisALEX/homelabs-hetzner-infra.git
     targetRevision: HEAD
     directory:
