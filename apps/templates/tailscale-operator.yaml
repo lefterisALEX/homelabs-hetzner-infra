@@ -23,4 +23,4 @@ spec:
     automated:
       prune: true
     syncOptions:
-      - ServerSideApply=true
+    - CreateNamespace=true
