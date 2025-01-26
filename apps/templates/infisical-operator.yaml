@@ -4,18 +4,18 @@ metadata:
   name: infisical-operator
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-5"
+    argocd.argoproj.io/sync-wave: "-10"
 spec:
   destination:
     namespace: kube-system
     server: https://kubernetes.default.svc
   project: default 
   syncPolicy:
-   automated:
-     prune: true
-     selfHeal: true
-   syncOptions:
-   - ServerSideApply=true
+  automated:
+    prune: true
+    selfHeal: true
+  syncOptions:
+  - ServerSideApply=true
   source:
     chart: secrets-operator
     repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts
