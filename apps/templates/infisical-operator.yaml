@@ -11,9 +11,9 @@ spec:
     server: https://kubernetes.default.svc
   project: default 
   syncPolicy:
-  automated:
-    prune: true
-    selfHeal: true
+    automated:
+      prune: true
+      selfHeal: true
   source:
     chart: secrets-operator
     repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts
