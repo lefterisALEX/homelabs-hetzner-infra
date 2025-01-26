@@ -29,4 +29,5 @@ spec:
     syncOptions:
       - ServerSideApply=true
       - Replace=true
+      - SyncTimeout=300
 
