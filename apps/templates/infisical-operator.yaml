@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
-    argocd.argoproj.io/hook: pre-sync
+    argocd.argoproj.io/hook: PreSync
 spec:
   destination:
     namespace: kube-system
